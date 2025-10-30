@@ -16,7 +16,7 @@ public class CSVDataManager {
     public CSVDataManager() {
         this.usuarios = loadUsuarios();
         this.peliculas = loadPeliculas();
-        System.out.printf("Cargados %d usuarios y %d películas.\n", usuarios.size(), peliculas.size());
+        System.out.printf("Cargados %d usuarios y %d películas.%n", usuarios.size(), peliculas.size());
     }
 
     private List<Usuario> loadUsuarios() {
@@ -121,11 +121,36 @@ public class CSVDataManager {
         Optional<Pelicula> peliculaToRemove = peliculas.stream()
                 .filter(p -> p.getId() == peliculaId)
                 .findFirst();
-
         if (peliculaToRemove.isPresent()) {
             peliculas.remove(peliculaToRemove.get());
+            rewritePeliculasCSV();
         } else {
             System.err.println("No se encontró la película con ID: " + peliculaId);
+        }
+    }
+
+    private void rewritePeliculasCSV() {
+        try (FileWriter fw = new FileWriter(PELICULAS_FILE, false);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+
+            for (Pelicula pelicula : peliculas) {
+                String csvLine = String.join(DELIMITER,
+                        String.valueOf(pelicula.getId()),
+                        pelicula.getTitulo(),
+                        String.valueOf(pelicula.getAno()),
+                        pelicula.getDirector(),
+                        pelicula.getDescripcion(),
+                        pelicula.getGenero(),
+                        pelicula.getImagenUrl(),
+                        String.valueOf(pelicula.getIdUsuario())
+                );
+                out.println(csvLine);
+            }
+
+        } catch (IOException e) {
+            System.err.println("Error al reescribir el archivo de películas: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }
