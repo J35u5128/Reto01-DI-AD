@@ -23,10 +23,10 @@ public class DetallePeliculaDialog extends JDialog {
         setResizable(false);
 
         TituloPelicula.setText(pelicula.getTitulo());
-        AñoPelicula.setText("Año: " + pelicula.getAno());
-        DirectorPelicula.setText("Director: " + pelicula.getDirector());
-        GeneroPelicula.setText("Género: " + pelicula.getGenero());
-        UrlImagenPelicula.setText("URL Imagen: " + pelicula.getImagenUrl());
+        AñoPelicula.setText(String.valueOf(pelicula.getAno()));
+        DirectorPelicula.setText(pelicula.getDirector());
+        GeneroPelicula.setText(pelicula.getGenero());
+        UrlImagenPelicula.setText(pelicula.getImagenUrl());
         SinopsisPelicula.setText(pelicula.getDescripcion());
 
         SinopsisPelicula.setEditable(false);
