@@ -74,22 +74,15 @@ public class CSVDataManager {
     }
 
     public Optional<Usuario> authenticate(String correo, String contrasena) {
-        return usuarios.stream()
-                .filter(u -> u.getEmail().equalsIgnoreCase(correo) && u.getPassword().equals(contrasena))
-                .findFirst();
+        return usuarios.stream().filter(u -> u.getEmail().equalsIgnoreCase(correo) && u.getPassword().equals(contrasena)).findFirst();
     }
 
     public List<Pelicula> getPeliculasByUserId(int userId) {
-        return peliculas.stream()
-                .filter(p -> p.getIdUsuario() == userId)
-                .collect(Collectors.toList());
+        return peliculas.stream().filter(p -> p.getIdUsuario() == userId).collect(Collectors.toList());
     }
 
     public int generateNextPeliculaId() {
-        return peliculas.stream()
-                .mapToInt(Pelicula::getId)
-                .max()
-                .orElse(0) + 1;
+        return peliculas.stream().mapToInt(Pelicula::getId).max().orElse(0) + 1;
     }
 
     public void addPelicula(Pelicula pelicula) {
@@ -118,9 +111,7 @@ public class CSVDataManager {
     }
 
     public void deletePelicula(int peliculaId) {
-        Optional<Pelicula> peliculaToRemove = peliculas.stream()
-                .filter(p -> p.getId() == peliculaId)
-                .findFirst();
+        Optional<Pelicula> peliculaToRemove = peliculas.stream().filter(p -> p.getId() == peliculaId).findFirst();
         if (peliculaToRemove.isPresent()) {
             peliculas.remove(peliculaToRemove.get());
             rewritePeliculasCSV();
